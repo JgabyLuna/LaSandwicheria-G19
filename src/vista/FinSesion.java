@@ -5,18 +5,32 @@
  */
 package vista;
 
+import controlador.Controlador;
+import controlador.IFinSesion;
+import javax.swing.JFrame;
+import modelo.Tienda;
+
 /**
  *
  * @author usuario
  */
-public class FinSesion extends javax.swing.JFrame {
-
+public class FinSesion extends javax.swing.JFrame implements IFinSesion{
+    Controlador controlador;
+    Tienda tienda;
+    
     /**
      * Creates new form FinSesion
+     * @param t
      */
-    public FinSesion() {
+    public FinSesion(Tienda t){
         initComponents();
+        setVisible(true);
+        controlador = new Controlador(this);
+        tienda = t;
         
+    }
+    public FinSesion(){
+        initComponents();
     }
 
     /**
@@ -31,9 +45,9 @@ public class FinSesion extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jButtonAceptar = new javax.swing.JButton();
+        jButtonCancelar = new javax.swing.JButton();
+        jButtonCalcular = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cierre de Sesion");
@@ -46,16 +60,22 @@ public class FinSesion extends javax.swing.JFrame {
         jTextField1.setEditable(false);
         jTextField1.setText("$");
 
-        jButton1.setText("Aceptar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAceptar.setText("Aceptar");
+        jButtonAceptar.setEnabled(false);
+        jButtonAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonAceptarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Cancelar");
+        jButtonCancelar.setText("Cancelar");
 
-        jButton3.setText("Calcular");
+        jButtonCalcular.setText("Calcular");
+        jButtonCalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCalcularActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -72,13 +92,13 @@ public class FinSesion extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
-                        .addComponent(jButton3)))
+                        .addComponent(jButtonCalcular)))
                 .addContainerGap(101, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(jButtonCancelar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(jButtonAceptar)
                 .addGap(37, 37, 37))
         );
         layout.setVerticalGroup(
@@ -90,20 +110,29 @@ public class FinSesion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(jButtonCalcular))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButtonAceptar)
+                    .addComponent(jButtonCancelar))
                 .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        this.dispose();
+        System.exit(0);
+    }//GEN-LAST:event_jButtonAceptarActionPerformed
+
+    private void jButtonCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalcularActionPerformed
+        // TODO add your handling code here:
+        ObtenerRecaudacion();
+        jTextField1.setText(""+tienda.getTerminal().getTurno().getRendicion());
+        jButtonAceptar.setEnabled(true);
+    }//GEN-LAST:event_jButtonCalcularActionPerformed
 
     /**
      * @param args the command line arguments
@@ -141,11 +170,16 @@ public class FinSesion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonAceptar;
+    private javax.swing.JButton jButtonCalcular;
+    private javax.swing.JButton jButtonCancelar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void ObtenerRecaudacion() {
+        controlador.ObtenerRecaudacion(tienda.getTerminal());
+    }
 }

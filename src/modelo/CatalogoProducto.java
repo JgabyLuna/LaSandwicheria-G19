@@ -25,7 +25,7 @@ public class CatalogoProducto {
         this.productos.add(producto);
     }
 
-    public Producto obtenerProducto(int idP, int cantidad) {
+    public Producto obtenerProducto(int idP) {
         for (Producto producto : productos) {
             if(producto.getId_Producto() == idP)
                 return producto;

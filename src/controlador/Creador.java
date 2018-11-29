@@ -37,7 +37,7 @@ public class Creador {
         Cajero c1 = new Cajero("Juan", 1234);
         Cajero c2 = new Cajero("Juan", 5678);
 
-        //pasa cajeros a tienda
+        //pasar cajeros a tienda
         Tienda t = new Tienda();
         t.setCajeros(c1);
         t.setCajeros(c2);

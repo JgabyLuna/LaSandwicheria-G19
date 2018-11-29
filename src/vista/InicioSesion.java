@@ -8,7 +8,8 @@ package vista;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import controlador.*;
-import modelo.Terminal;
+import javax.swing.JFrame;
+import modelo.Tienda;
 
 /**
  *
@@ -16,22 +17,23 @@ import modelo.Terminal;
  */
 public class InicioSesion extends javax.swing.JFrame implements IInicioSesion {
 
-    private Terminal terminal;
+    private Tienda tienda;
     private Autentificador autentificador;
 
-    public InicioSesion(Terminal terminal) {
+    public InicioSesion(Tienda t) {
         initComponents();
         this.setAutentificador(new Autentificador(this));
-        this.setTienda(terminal);
+        this.setTienda(t);
+        this.setExtendedState(JFrame.NORMAL);
         this.setVisible(true);
     }
 
-    public Terminal getTerminal() {
-        return terminal;
+    public Tienda getTerminal() {
+        return tienda;
     }
 
-    public void setTienda(Terminal terminal) {
-        this.terminal = terminal;
+    public void setTienda(Tienda terminal) {
+        this.tienda = terminal;
     }
 
     public Autentificador getAutentificador() {
@@ -155,7 +157,7 @@ public class InicioSesion extends javax.swing.JFrame implements IInicioSesion {
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
         String nombre = this.TextFieldNombre.getText();
         int contraseña = Integer.parseInt(this.jPasswordField.getText());
-        autentificador.solicitarAutentificacion(nombre, contraseña, terminal.getTienda());
+        autentificador.solicitarAutentificacion(nombre, contraseña, tienda);
         this.setVisible(false);
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 

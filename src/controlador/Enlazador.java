@@ -23,24 +23,27 @@ import service.contracts.service.istp1.LoginService;
  * @author usuario
  */
 public class Enlazador {
-    public static String autorizarComprobante(int ptoVta, int cbteTipo, String codGrupo, Venta v, String montId, double montCotz, int cantReg, Cliente cliente, int concepto){
+    public static Object [] autorizarComprobante(int ptoVta, int cbteTipo, String codGrupo, Venta v, String montId, double montCotz, int cantReg, Cliente cliente, int concepto){
         
         Autorizacion aut = new Autorizacion();
         FEAuthRequest feauthRequest = new FEAuthRequest();
         FERecuperaLastCbteResponse recuperaUltimoComprobante = new FERecuperaLastCbteResponse();
         FECAERequest feCAEReq = new FECAERequest();
         FECAEResponse fecaeResponse = new FECAEResponse();
+        Object [] resultado = new Object[2];
         String estado;
         
         aut = solicitarComprobante(codGrupo);
         feauthRequest = generarFEAuthRequest(aut);
         recuperaUltimoComprobante = solicitarFECompUltimoAut(feauthRequest, ptoVta, cbteTipo); 
-        int ultimoComprobante = recuperaUltimoComprobante.getCbteNro();
+        long ultimoComprobante = recuperaUltimoComprobante.getCbteNro();
         feCAEReq = generarFECAERequest(ptoVta, cantReg, cbteTipo, montId, montCotz, v, cliente, concepto, ultimoComprobante);
         fecaeResponse = solicitarFECAE(feauthRequest, feCAEReq);
         estado = obtenerEstado(fecaeResponse);
         
-        return estado;
+        resultado [0] = estado;
+        resultado [1] = ultimoComprobante+1;
+        return resultado;
     }
     
     public static Autorizacion solicitarComprobante(String codGrupo){
@@ -65,7 +68,7 @@ public class Enlazador {
         return ultimoCompAut;
     }
 
-    private static FECAERequest generarFECAERequest(int ptoVta, int cantReg, int cbteTipo, String montId, double montCotz, Venta v, Cliente cliente, int concepto, int ultimoComprobante) {
+    private static FECAERequest generarFECAERequest(int ptoVta, int cantReg, int cbteTipo, String montId, double montCotz, Venta v, Cliente cliente, int concepto, long ultimoComprobante) {
         FECAERequest feCAEReq = new FECAERequest();
         
             FECAECabRequest feCAECabReq = new FECAECabRequest();

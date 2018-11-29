@@ -38,17 +38,7 @@ public class LineaVenta {
     }
 
     public void setSubTotal() {
-        double precioP = 0;
-        if(!getProducto().getAgregado().isEmpty()){
-         for (int i = 0; i < getProducto().getAgregado().size(); i++) {
-            if(getProducto().getAgregado().get(i).isIncluido()){
-                precioP = getProducto().getPrecio() + getProducto().getAgregado().get(i).getPrecio();
-            }
-        }
-         
-        } else
-            precioP = getProducto().getPrecio();
-        this.subTotal = precioP * getCantidad();
+        this.subTotal = calcularSubTotal();
     }
 
     public Producto getProducto() {
@@ -65,6 +55,20 @@ public class LineaVenta {
 
     public void setAgregados(ArrayList<Agregado> agregados) {
         this.agregados = agregados;
+    }
+
+    public double calcularSubTotal() {
+        double precioP = 0;
+        if(!getProducto().getAgregado().isEmpty()){
+         for (int i = 0; i < getProducto().getAgregado().size(); i++) {
+            if(getProducto().getAgregado().get(i).isIncluido()){
+                precioP = getProducto().getPrecio() + getProducto().getAgregado().get(i).getPrecio();
+            }
+        }
+         
+        } else
+            precioP = getProducto().getPrecio();
+        return  (precioP * getCantidad());
     }
     
     

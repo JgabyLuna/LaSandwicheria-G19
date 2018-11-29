@@ -19,8 +19,14 @@ public class Producto {
     private ArrayList<Agregado> agregado = new ArrayList();
     private Rubro rubro;
 
-    public Producto() {
-       
+    public Producto() {       
+    }
+    
+    public Producto(int id_Producto, String nombre, double precio, int cantidad) {
+        this.id_Producto = id_Producto;
+        this.nombre = nombre;
+        this.precio = precio;        
+        this.cantidad = cantidad;
     }
 
     public int getCantidad() {
@@ -76,15 +82,23 @@ public class Producto {
         this.rubro = rubro;
     }
     
-    public Producto(int id_Producto, String nombre, double precio, int cantidad) {
-        this.id_Producto = id_Producto;
-        this.nombre = nombre;
-        this.precio = precio;        
-        this.cantidad = cantidad;
+    public boolean actualizarDisponibilidad(int cantidad){
+        if(this.getCantidad()>cantidad){
+            this.setCantidad(cantidad);
+            return true;
+        } else
+            return false;                
     }
-
+    
+    boolean consultarDisponibilidad(int cantidad) {
+        if(this.cantidad >= cantidad)
+            return true;
+        else
+            return false;
+    }
+    
     @Override
     public String toString() {
         return this.nombre;
-    }
+    }   
 }

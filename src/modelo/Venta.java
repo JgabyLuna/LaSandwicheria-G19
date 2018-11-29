@@ -6,6 +6,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  *
@@ -20,7 +21,7 @@ public class Venta {
     private int nroFactura;
 
     public Venta() {
-        obtenerFecha();
+        this.setFecha("" + obtenerFecha());
     }
 
     public String getFecha() {
@@ -35,12 +36,8 @@ public class Venta {
         return total;
     }
 
-    public void setTotal() {
-        this.total = 0;
-        for (LineaVenta lineaVenta : lineasVenta) {
-            this.total = this.total + lineaVenta.getSubTotal();
-        }
-        
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public boolean isIsCompleta() {
@@ -55,30 +52,52 @@ public class Venta {
         return lineasVenta;
     }
 
-    public void setLineasVenta(Producto p, int cantidad) {       
+    public void setLineasVenta(Producto p, int cantidad) {
         LineaVenta lv = new LineaVenta(cantidad, p);
         lv.setSubTotal();
         this.lineasVenta.add(lv);
     }
 
+    public int getNroFactura() {
+        return nroFactura;
+    }
+
+    public void setNroFactura(int nroFactura) {
+        this.nroFactura = nroFactura;
+    }
+    
+    
     public void agregarProducto(Producto producto, int cantidad) {
-        setLineasVenta(producto, cantidad);
-        setTotal();
+        this.setLineasVenta(producto, cantidad);
+        this.setTotal(calcularTotal());
     }
 
-    public final void obtenerFecha() {
-//        Calendar cal1 = Calendar.getInstance();
-//        int anioI = cal1.get(Calendar.YEAR);
-//        int mesI = cal1.get(Calendar.MONTH);
-//        int diaI = cal1.get(Calendar.DATE);
-//        String mes = ("" + mesI);
-//        if(mes.length() < 2)
-//            mes = ("0" + mes);
-//        String dia = ("" + diaI);
-//        if(dia.length() < 2)
-//            dia = ("0" + dia);
-//        this.setFecha(anioI + "" + mes + "" + dia);
-        this.setFecha("20180912");
+    public boolean consultarDisponibilidad(Producto pro, int cantidad) {
+        return pro.consultarDisponibilidad(cantidad);
     }
 
+    public void actualizarDisponibilidad() {
+        for (int i = 0; i < this.lineasVenta.size(); i++) {
+            this.lineasVenta.get(i).getProducto().actualizarDisponibilidad(this.lineasVenta.get(i).getCantidad());
+        }
+    }
+
+    public final int obtenerFecha() {
+        int fecha;
+        Calendar cal1 = Calendar.getInstance();
+        int anio = cal1.get(Calendar.YEAR);
+        int mes = cal1.get(Calendar.MONTH);
+        int dia = cal1.get(Calendar.DATE);
+        fecha = Integer.parseInt("" + anio + mes + dia);
+        return fecha;
+
+    }
+
+    public double calcularTotal() {
+        double total = 0;
+        for (LineaVenta lineaVenta : lineasVenta) {
+            total = total + lineaVenta.getSubTotal();
+        }
+        return total;
+    }
 }

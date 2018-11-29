@@ -18,6 +18,7 @@ public class Turno {
     private int horaFin;
     private ArrayList<Venta> ventas = new ArrayList();
     private Cajero cajero;
+    private double rendicion;
 
     public Turno() {
         horaInicio = obtenerHora();
@@ -63,6 +64,13 @@ public class Turno {
         this.cajero = cajero;
     }
     
+    public double getRendicion(){
+        return rendicion;
+    }
+    public void setRendicion(double rendicion){
+        this.rendicion = rendicion;
+    }
+    
     public int obtenerHora(){
         int hora;
         Calendar cal1 = Calendar.getInstance();
@@ -70,20 +78,23 @@ public class Turno {
         return hora;
     }
     
-    public Rendicion obtenerRendicion(){
-        double total = 0;
-        for (Venta venta : ventas) {
-            total = total + venta.getTotal();
-        }
-        Rendicion rendicion = new Rendicion();
-        rendicion.setGanancia(total);
-        return rendicion;
+    public void obtenerRendicion(){
+        setRendicion(calcularRendicion());
     }
     
 
     public void finalizarTurno(Venta venta) {
         this.setHoraFin(this.obtenerHora());
         this.setVentas(venta);
-        cajero.cerrarSesion();
+        //cajero.cerrarSesion();
+        
+    }
+
+    public double calcularRendicion() {
+        double total = 0;
+        for (Venta venta : this.ventas) {
+            total = total + venta.getTotal();
+        }
+        return total;   
     }
 }

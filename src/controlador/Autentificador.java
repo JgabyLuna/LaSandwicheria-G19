@@ -7,7 +7,7 @@ package controlador;
 
 import javax.swing.JOptionPane;
 import modelo.*;
-import vista.VistaVenta2;
+import vista.VistaVenta;
 
 /**
  *
@@ -19,17 +19,13 @@ public class Autentificador {
 
     }
 
-    public void solicitarAutentificacion(String nombre, int legajo, Tienda tienda) {
-        
+    public void solicitarAutentificacion(String nombre, int legajo, Tienda tienda) {        
         if (autentificacion(legajo, nombre)) {
             tienda.getTerminal().IniciarSesion(nombre, legajo);            
         } else {
-            JOptionPane.showMessageDialog(null, "Legajo Inexistente");
-            
-        }
-        
-        VistaVenta2 vista = new VistaVenta2(tienda);
-
+            JOptionPane.showMessageDialog(null, "Legajo Inexistente");            
+        }        
+        VistaVenta vista = new VistaVenta(tienda);
     }
 
     public boolean autentificacion(int legajo, String nombre) {

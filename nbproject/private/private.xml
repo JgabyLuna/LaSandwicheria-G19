@@ -2,6 +2,16 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/usuario/Dropbox/IngSoft/LaSandwicheria/src/main/Main.java</file>
+            <file>file:/C:/Users/usuario/Dropbox/IngSoft/LaSandwicheria/src/modelo/Terminal.java</file>
+            <file>file:/C:/Users/usuario/Dropbox/IngSoft/LaSandwicheria/src/vista/VistaVenta.java</file>
+            <file>file:/C:/Users/usuario/Dropbox/IngSoft/LaSandwicheria/src/modelo/LineaVenta.java</file>
+            <file>file:/C:/Users/usuario/Dropbox/IngSoft/LaSandwicheria/test/Test/TestCalcularRendicionDelTurno.java</file>
+            <file>file:/C:/Users/usuario/Dropbox/IngSoft/LaSandwicheria/src/modelo/Producto.java</file>
+            <file>file:/C:/Users/usuario/Dropbox/IngSoft/LaSandwicheria/src/vista/VistaComanda.java</file>
+            <file>file:/C:/Users/usuario/Dropbox/IngSoft/LaSandwicheria/src/controlador/Enlazador.java</file>
+            <file>file:/C:/Users/usuario/Dropbox/IngSoft/LaSandwicheria/src/controlador/Controlador.java</file>
+        </group>
     </open-files>
 </project-private>

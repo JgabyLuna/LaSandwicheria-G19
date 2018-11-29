@@ -7,6 +7,9 @@ package modelo;
 
 import controlador.Enlazador;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import vista.VistaComanda;
+import vista.VistaFactura;
 
 /**
  *
@@ -14,16 +17,19 @@ import java.util.ArrayList;
  */
 public class Terminal {
 
-    private ArrayList<Turno> turnos = new ArrayList();
+    private Turno turno;
     private Venta venta;
     private Tienda tienda;
 
-    public ArrayList<Turno> getTurnos() {
-        return turnos;
+    public Terminal() {
     }
 
-    public void setTurnos(Turno turno) {
-        this.turnos.add(turno);
+    public Turno getTurno() {
+        return turno;
+    }
+
+    public void setTurno(Turno turno) {
+        this.turno = turno;
     }
 
     public Venta getVenta() {
@@ -44,44 +50,45 @@ public class Terminal {
 
     public void IniciarSesion(String nombre, int legajo) {
         Cajero cajero = new Cajero(nombre, legajo);
-        Turno turno = new Turno();
-        turno.setCajero(cajero);
-        this.setTurnos(turno);
+        Turno t = new Turno();
+        t.setCajero(cajero);
+        this.setTurno(t);
 
     }
 
     public void crearVenta() {
-        Venta v = new Venta();
-        this.venta = v;
+        this.venta = new Venta();
     }
 
     public void introducirProducto(int id_Producto, int cantidad, CatalogoProducto catalogo) {
         Producto producto = new Producto();
-        producto = catalogo.obtenerProducto(id_Producto, cantidad);
+        producto = catalogo.obtenerProducto(id_Producto);
         venta.agregarProducto(producto, cantidad);
-//        v.setTotal();
-//        System.out.println(v.getTotal());
-//        // hacer venta.crearDetaVenta()
     }
 
     public void introducirAgregado(int idp, ArrayList<Agregado> agregados, CatalogoProducto catalogo) {
         Producto producto = new Producto();
         producto.setAgregado(agregados);
-        producto = catalogo.obtenerProducto(idp, 1);
+        producto = catalogo.obtenerProducto(idp);
         venta.agregarProducto(producto, 1);
     }
-
+    
     public void facturar(int cbteTipo, int nroDocumento, int docTipo, String montId) {
         Cliente cliente = new Cliente(nroDocumento, new DocTipo(docTipo, ""));
-        String estado = "";
-        estado = Enlazador.autorizarComprobante(tienda.getPtoVta().getNro(), cbteTipo, "91CCD580-37DB-4B27-8F49-B5BC4F786330", venta, montId, 1, 1, cliente, 1);
-        if (estado.equals("A")) {
-            venta.setIsCompleta(true);
-        } else if (estado.equals("R")) {
-            venta.setIsCompleta(false);
+        Object [] resultado;        
+        try {
+            resultado = Enlazador.autorizarComprobante(tienda.getPtoVta().getNro(), cbteTipo, "91CCD580-37DB-4B27-8F49-B5BC4F786330", venta, montId, 1, 1, cliente, 1);
+            String estado = (String)resultado [0];
+            if (estado.equals("A")) {
+                venta.setIsCompleta(true);
+                venta.setNroFactura(Integer.parseInt(""+resultado [1]));
+                venta.actualizarDisponibilidad();
+            } else if (estado.equals("R")) {
+                venta.setIsCompleta(false);
+            }            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Por el momento no se puede conectar al Sistema externo", "ERROR",JOptionPane.ERROR_MESSAGE);
         }
-        //mostrar el resultado por pantalla
-        System.out.println(estado);
         finalizar();
     }
 
@@ -94,7 +101,9 @@ public class Terminal {
     }
 
     private void finalizar() {
-        turnos.get(turnos.size() - 1).finalizarTurno(venta);
+        turno.finalizarTurno(venta);
+        VistaComanda vista = new VistaComanda(venta);
+        VistaFactura vista1 = new VistaFactura(tienda);
     }
 
 }
